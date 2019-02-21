@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jenkins
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: [VOLUME_NAME]
+  namespace: jenkins
+  annotations:
+    pv.kubernetes.io/provisioned-by: dobs.csi.digitalocean.com
+spec:
+  storageClassName: do-block-storage
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: [VOLUME_SIZE]
+  accessModes:
+    - ReadWriteOnce
+  csi:
+    driver: dobs.csi.digitalocean.com
+    fsType: ext4
+    volumeHandle: [VOLUME_ID]
+    volumeAttributes:
+      com.digitalocean.csi/noformat: "true"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: [VOLUME_NAME]
+  namespace: jenkins
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: [VOLUME_SIZE]
+  storageClassName: do-block-storage

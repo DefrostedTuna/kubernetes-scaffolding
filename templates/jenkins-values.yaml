@@ -1,0 +1,36 @@
+fullnameOverride: "jenkins"
+
+Master:
+  ImageTag: "lts-alpine"
+  ImagePullPolicy: Always
+
+  HostName: [HOSTNAME]
+
+  ServiceType: ClusterIP
+  ServicePort: 8080
+
+  InstallPlugins:
+    - kubernetes:1.13.1
+    - workflow-job:2.31
+    - workflow-aggregator:2.6
+    - credentials-binding:1.17
+    - git:3.9.1
+
+  Ingress:
+    ApiVersion: extensions/v1beta1
+    Annotations:
+      kubernetes.io/ingress.class: nginx
+      kubernetes.io/tls-acme: "true"
+      certmanager.k8s.io/cluster-issuer: letsencrypt-staging
+      ingress.kubernetes.io/secure-backends: "true"
+
+    TLS:
+    - secretName: jenkins-tls-staging
+
+Persistence:
+  Enabled: true
+  ExistingClaim: [PVC_NAME]
+  Size: 5Gi
+
+rbac:
+  install: true

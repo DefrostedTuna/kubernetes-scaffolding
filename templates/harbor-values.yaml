@@ -1,0 +1,58 @@
+imagePullPolicy: Always
+
+externalURL: https://[EXTERNAL_URL]
+
+harborAdminPassword: [ADMIN_PASSWORD]
+secretKey: [SECRET_KEY]
+
+expose:
+  type: ingress
+  tls:
+    enabled: true
+    secretName: "harbor-registry-tls-staging"
+    notarySecretName: "harbor-notary-tls-staging"
+  ingress:
+    hosts:
+      core: [CORE_URL]
+      notary: [NOTARY_URL]
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      certmanager.k8s.io/cluster-issuer: letsencrypt-staging
+
+persistence:
+  enabled: true
+  resourcePolicy: "keep"
+  persistentVolumeClaim:
+    registry:
+      existingClaim: [PVC_HARBOR_REGISTRY_NAME]
+      storageClass: "-"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: [PVC_HARBOR_REGISTRY_SIZE]Gi
+    chartmuseum:
+      existingClaim: [PVC_HARBOR_CHARTMUSEUM_NAME]
+      storageClass: "-"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: [PVC_HARBOR_CHARTMUSEUM_SIZE]Gi
+    jobservice:
+      existingClaim: [PVC_HARBOR_JOBSERVICE_NAME]
+      storageClass: "-"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: [PVC_HARBOR_JOBSERVICE_SIZE]Gi
+    database:
+      existingClaim: [PVC_HARBOR_DATABASE_NAME]
+      storageClass: "-"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: [PVC_HARBOR_DATABASE_SIZE]Gi
+    redis:
+      existingClaim: [PVC_HARBOR_REDIS_NAME]
+      storageClass: "-"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: [PVC_HARBOR_REDIS_SIZE]Gi

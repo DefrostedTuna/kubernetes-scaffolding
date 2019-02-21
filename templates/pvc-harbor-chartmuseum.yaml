@@ -1,0 +1,35 @@
+# PV - Harbor Chart Museum
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: [VOLUME_NAME]
+  namespace: harbor
+  annotations:
+    pv.kubernetes.io/provisioned-by: dobs.csi.digitalocean.com
+spec:
+  storageClassName: do-block-storage
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: [VOLUME_SIZE]
+  accessModes:
+    - ReadWriteOnce
+  csi:
+    driver: dobs.csi.digitalocean.com
+    fsType: ext4
+    volumeHandle: [VOLUME_ID]
+    volumeAttributes:
+      com.digitalocean.csi/noformat: "true"
+---
+# PVC - Harbor Chart Museum
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: [VOLUME_NAME]
+  namespace: harbor
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: [VOLUME_SIZE]
+  storageClassName: do-block-storage
