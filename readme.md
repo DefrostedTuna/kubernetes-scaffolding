@@ -43,7 +43,7 @@ Once these dependencies are present the script will configure the following:
 Clone the repository onto your local machine.
 
 ```
-https://github.com/DefrostedTuna/kubernetes-scaffolding.git && cd kubernetes-scaffolding
+git clone https://github.com/DefrostedTuna/kubernetes-scaffolding.git && cd kubernetes-scaffolding
 ```
 
 Make the script executable.
